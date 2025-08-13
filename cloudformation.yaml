@@ -1,0 +1,36 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CloudFormation template for S3 and DynamoDB
+
+Resources:
+  CertificateBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: dormakaba-doychin-task
+      VersioningConfiguration:
+        Status: Enabled
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+
+  CertificateSignaturesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: CertificateSignatures
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: CommonName
+          AttributeType: S
+      KeySchema:
+        - AttributeName: CommonName
+          KeyType: HASH
+
+Outputs:
+  BucketName:
+    Description: Name of the S3 bucket
+    Value: !Ref CertificateBucket
+
+  DynamoDBTableName:
+    Description: Name of the DynamoDB table
+    Value: !Ref CertificateSignaturesTable
