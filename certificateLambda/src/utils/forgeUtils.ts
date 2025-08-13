@@ -1,16 +1,5 @@
 import forge from "node-forge";
 
-const getCertAlgorithm = (cert: forge.pki.Certificate): "RSA" | "ECC" => {
-    const pubKey = cert.publicKey;
-    if ((pubKey as any).n && (pubKey as any).e) {
-        return "RSA";
-    } else if ((pubKey as any).Q) {
-        return "ECC";
-    } else {
-        throw new Error("Unsupported public key type");
-    }
-};
-
 export const parseCertificateFromPem = (pemCert: string): forge.pki.Certificate => {
     return forge.pki.certificateFromPem(pemCert);
 }
